@@ -21,6 +21,7 @@ class MovieRepository{
     results.forEach((jsonMovie) {
       movies.add(Movie.fromJson(jsonMovie));
     });
+    movies.shuffle();
     return MovieInfo(movies: movies, message: "Chargement ok", status: true);
   }
 

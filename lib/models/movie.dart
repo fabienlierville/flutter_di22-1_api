@@ -70,4 +70,9 @@ class Movie {
     "vote_average": voteAverage,
     "vote_count": voteCount,
   };
+
+  String getImargeUrl(){
+    return "https://media.themoviedb.org/t/p/w500${this.posterPath}";
+  }
+
 }
