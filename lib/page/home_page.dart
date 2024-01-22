@@ -1,4 +1,5 @@
 import 'package:api/models/movie.dart';
+import 'package:api/models/movie_info.dart';
 import 'package:api/repositories/movie_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +19,14 @@ class _HomePageState extends State<HomePage> {
         child: ElevatedButton(
           onPressed: () async{
             print("Interrogation de l'API");
-            List<Movie>? movies = await MovieRepository.getPopular();
-            if(movies != null){
-              movies.forEach((movie) {
+
+            MovieInfo movieInfo = await MovieRepository.getPopular();
+            if(movieInfo.status){
+              movieInfo.movies.forEach((movie) {
                 print(movie.title);
               });
+            }else{
+              print(movieInfo.message); //Traite le message d'erreur
             }
           },
           child: Text("Récupérer les films"),

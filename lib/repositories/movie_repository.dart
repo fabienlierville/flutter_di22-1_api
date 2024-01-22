@@ -1,18 +1,19 @@
 import 'package:api/models/movie.dart';
+import 'package:api/models/movie_info.dart';
 import 'package:api/services/api_movie_service.dart';
 
 class MovieRepository{
 
-  static Future<List<Movie>?> getPopular() async{
+  static Future<MovieInfo> getPopular() async{
     ApiMovieService apiMovieService = ApiMovieService();
     Map<String,dynamic>? json = await apiMovieService.getPopular();
 
     if(json == null){
-      return null;
+      return MovieInfo(movies: [], message: "Le Json est nul", status: false);
     }
 
     if(json.isEmpty){
-      return null;
+      return MovieInfo(movies: [], message: "Aucun film ne correspond à votre sélection", status: false);
     }
 
     List<dynamic> results = json["results"]; // Json liste de films
@@ -20,7 +21,7 @@ class MovieRepository{
     results.forEach((jsonMovie) {
       movies.add(Movie.fromJson(jsonMovie));
     });
-    return movies;
+    return MovieInfo(movies: movies, message: "Chargement ok", status: true);
   }
 
 }
