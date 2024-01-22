@@ -1,3 +1,5 @@
+import 'package:api/models/movie.dart';
+import 'package:api/repositories/movie_repository.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +16,15 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(title: Text("Cinéma"),),
       body: Center(
         child: ElevatedButton(
-          onPressed: null,
+          onPressed: () async{
+            print("Interrogation de l'API");
+            List<Movie>? movies = await MovieRepository.getPopular();
+            if(movies != null){
+              movies.forEach((movie) {
+                print(movie.title);
+              });
+            }
+          },
           child: Text("Récupérer les films"),
         ),
       ),
