@@ -3,9 +3,13 @@ import 'package:api/models/movie_info.dart';
 import 'package:api/services/api_movie_service.dart';
 
 class MovieRepository{
+  late final ApiMovieService apiMovieService;
+  MovieRepository({
+    required this.apiMovieService,
+  });
 
-  static Future<MovieInfo> getPopular() async{
-    ApiMovieService apiMovieService = ApiMovieService();
+  Future<MovieInfo> getPopular() async{
+
     Map<String,dynamic>? json = await apiMovieService.getPopular();
 
     if(json == null){
@@ -24,5 +28,6 @@ class MovieRepository{
     movies.shuffle();
     return MovieInfo(movies: movies, message: "Chargement ok", status: true);
   }
+
 
 }

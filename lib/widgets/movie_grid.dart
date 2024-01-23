@@ -1,4 +1,5 @@
 import 'package:api/models/movie.dart';
+import 'package:api/widgets/stars_rating.dart';
 import 'package:flutter/material.dart';
 
 class MovieGrid extends StatelessWidget{
@@ -23,7 +24,8 @@ class MovieGrid extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(movie.title, overflow: TextOverflow.ellipsis,),
-                  Text("${movie.voteAverage.toString()} / 10"),
+                  //Text("${movie.voteAverage.toString()} / 10"),
+                  StarsRating(rating: movie.voteAverage),
                   Card(
                     elevation: 7.5,
                     child: Container(

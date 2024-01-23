@@ -6,6 +6,11 @@ class ApiMovieService{
   final String baseURL = "https://api.themoviedb.org/3/movie";
   final String token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNWE4YTQ4NmZiMDY5ZmNiMTAzOTZhN2EzZTQ5Y2ViNCIsInN1YiI6IjVkMzAzZTI4Y2FhYjZkMTY0MGEwNjI5ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.apVYXOzq2PTk-rBQ6Zj-HKNwwGWVpke9XIL0-KXq_zw";
   final String lang = "fr-FR";
+  final int page;
+  const ApiMovieService({
+    required this.page,
+  });
+
 
   Future<Map<String,dynamic>?> getPopular() async{
     String completeURL = "${baseURL}/popular?language=${lang}&page=1";
@@ -24,5 +29,6 @@ class ApiMovieService{
     return null;
 
   }
+
 
 }

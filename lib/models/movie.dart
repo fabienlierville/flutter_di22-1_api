@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 Movie movieFromJson(String str) => Movie.fromJson(json.decode(str));
 
 String movieToJson(Movie data) => json.encode(data.toJson());
@@ -74,5 +76,39 @@ class Movie {
   String getImargeUrl(){
     return "https://media.themoviedb.org/t/p/w500${this.posterPath}";
   }
+
+  String getDate(){
+    return DateFormat("d MMMM y").format(this.releaseDate);
+  }
+
+  String getDateFrom(){
+    String il = "il y'a";
+
+    if (this.releaseDate == null){
+      return "Date inconnue";
+    }else{
+      var difference = new DateTime.now().difference(this.releaseDate);
+      var jours = difference.inDays;
+      var heures = difference.inHours;
+      var minutes = difference.inMinutes;
+
+      if(jours > 1){
+        return "$il $jours jours";
+      }else if(jours == 1){
+        return "$il 1 jour";
+      }else if(heures > 1) {
+        return "$il $heures heures";
+      }else if(heures == 1) {
+        return "$il 1 heure";
+      }else if(minutes > 1) {
+        return "$il $minutes minutes";
+      }else if(minutes == 1) {
+        return "$il 1 minute";
+      }else{
+        return "A l'instant";
+      }
+    }
+  }
+
 
 }

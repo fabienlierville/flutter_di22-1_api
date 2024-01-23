@@ -37,7 +37,7 @@ class MovieList extends StatelessWidget{
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(width: _size.width / 2.5,child:Text(movie.title, style: TextStyle(color: Colors.blue),) ,),
-                            Text(movie.releaseDate.toString(),  style: TextStyle(color: Colors.red),)
+                            Text(movie.getDate(),  style: TextStyle(color: Colors.red),)
                           ],
                         ),
                         //Photo du film + résumé

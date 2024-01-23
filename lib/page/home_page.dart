@@ -1,6 +1,7 @@
 import 'package:api/models/movie.dart';
 import 'package:api/models/movie_info.dart';
 import 'package:api/repositories/movie_repository.dart';
+import 'package:api/services/api_movie_service.dart';
 import 'package:api/widgets/custom_text.dart';
 import 'package:api/widgets/movie_grid.dart';
 import 'package:api/widgets/movie_list.dart';
@@ -116,7 +117,8 @@ class _HomePageState extends State<HomePage> {
       statusApi = StatusApi.chargement;
     });
 
-    MovieInfo movieInfo = await MovieRepository.getPopular();
+    MovieInfo movieInfo = await MovieRepository(apiMovieService: ApiMovieService(page: 1)).getPopular();
+
     await Future.delayed(const Duration(seconds: 3));
 
     if(movieInfo.status){
@@ -133,7 +135,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Movie>> getPopularMovies2() async{
     List<Movie> movies = [];
-    MovieInfo movieInfo = await MovieRepository.getPopular();
+    MovieInfo movieInfo = await MovieRepository(apiMovieService: ApiMovieService(page: 1)).getPopular();
+
     await Future.delayed(const Duration(seconds: 3));
     if(movieInfo.status){
       movies = movieInfo.movies;
