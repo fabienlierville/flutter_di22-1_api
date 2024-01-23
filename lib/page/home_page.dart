@@ -17,14 +17,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   StatusApi? statusApi;
   List<Movie> movies = [];
+  int pageActuelle = 1;
+  int pageTotale = 2;
+
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getPopularMovies();
-
+    scrollController.addListener(infinityScroll);
   }
+
+  infinityScroll(){
+    print("Position = ${scrollController.position.pixels}| Taille Max = ${scrollController.position.maxScrollExtent}");
+    if(scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.95){
+      print("J'arrive à 95% de ma liste actuelle");
+      pageActuelle = pageActuelle + 1;
+      setState(() {
+
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +50,11 @@ class _HomePageState extends State<HomePage> {
         title: Text("Cinéma"),
         actions: [
           IconButton(
-              onPressed: getPopularMovies,
+              onPressed: (){
+                movies = []; // réinit
+                pageActuelle = 1; // réinit
+                getPopularMovies();
+              },
               icon: Icon(Icons.refresh)
           )
         ],
@@ -67,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                 List<Movie> movies = snapshot.data!;
                 Orientation orientation = MediaQuery.of(context).orientation;
                 if(orientation == Orientation.portrait){
-                  return MovieList(movies: movies);
+                  return MovieList(movies: movies, scrollController: scrollController,);
                 }else{
                   return MovieGrid(movies: movies);
                 }
@@ -105,7 +127,7 @@ class _HomePageState extends State<HomePage> {
       //Todo ListView Films
       Orientation orientation = MediaQuery.of(context).orientation;
       if(orientation == Orientation.portrait){
-        return MovieList(movies: movies);
+        return MovieList(movies: movies, scrollController: scrollController,);
       }else{
         return MovieGrid(movies: movies);
       }
@@ -117,14 +139,15 @@ class _HomePageState extends State<HomePage> {
       statusApi = StatusApi.chargement;
     });
 
-    MovieInfo movieInfo = await MovieRepository(apiMovieService: ApiMovieService(page: 1)).getPopular();
+    MovieInfo movieInfo = await MovieRepository(apiMovieService: ApiMovieService(page: pageActuelle)).getPopular();
 
     await Future.delayed(const Duration(seconds: 3));
 
     if(movieInfo.status){
       setState(() {
         statusApi = StatusApi.ok;
-        movies = movieInfo.movies;
+        movies.addAll(movieInfo.movies); // On ajoute une liste à une liste déjà existante
+        pageTotale = movieInfo.pageTotale;
       });
     }else{
       setState(() {
@@ -134,12 +157,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<Movie>> getPopularMovies2() async{
-    List<Movie> movies = [];
     MovieInfo movieInfo = await MovieRepository(apiMovieService: ApiMovieService(page: 1)).getPopular();
 
     await Future.delayed(const Duration(seconds: 3));
     if(movieInfo.status){
-      movies = movieInfo.movies;
+      movies.addAll(movieInfo.movies); // On ajoute une liste à une liste déjà existante
+      pageTotale = movieInfo.pageTotale;
     }
     return movies;
   }
