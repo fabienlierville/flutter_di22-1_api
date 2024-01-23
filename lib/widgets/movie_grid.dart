@@ -24,7 +24,7 @@ class MovieGrid extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(movie.title, overflow: TextOverflow.ellipsis,),
-                  //Text("${movie.voteAverage.toString()} / 10"),
+                  Text("${movie.voteAverage.toString()} / 10"),
                   StarsRating(rating: movie.voteAverage),
                   Card(
                     elevation: 7.5,
